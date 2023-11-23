@@ -9,3 +9,43 @@ datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }
+
+model Usuario {
+  id String @id @default(uuid())
+  nome String
+  username String @unique
+  senha String
+  telefone String
+  email String
+
+  imoveis Imovel[]
+
+  @@map("Usuário")
+}
+
+model Imovel{
+  id String @id @default(uuid())
+  nome String
+  latitude Float
+  longitude Float
+  tipo String
+  descricao String
+  preco Decimal
+  disponivel Boolean @default(true)
+  avalicao Int
+  numInquilinos Int
+
+  usuario Usuario? @relation(fields: [userId], references: [id])
+  userId String?
+
+  imagens Imagens[]
+
+  @@map("Imóvel") 
+}
+
+model Imagens {
+  nomeImagem String @id 
+
+  imovel Imovel? @relation(fields: [imovelId], references: [id])
+  imovelId String?
+}
