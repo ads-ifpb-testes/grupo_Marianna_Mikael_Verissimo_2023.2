@@ -58,9 +58,20 @@ const findAll = async (): Promise<Usuario[]> => {
     return users;
 }
 
+const userDelete = async (id: string):Promise<void> => {
+    const user = await prisma.usuario.delete({
+        where:{
+            id
+        }
+    })
+}
+
+
+
 export const userServices = {
     create,
     findAll,
+    userDelete,
     // findByUsername,
     // findById
 }

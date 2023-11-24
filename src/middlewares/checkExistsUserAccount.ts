@@ -4,18 +4,17 @@ import { prisma } from "../database/repositoryUser";
 //*middleware*//
 
 export async function checkExistsUserAccount(req: Request, res: Response, next: NextFunction) {
-    const { username } = req.headers as {username:string};
+    const { id } = req.params as {id:string};
 
     const userFound = await prisma.usuario.findUnique({
         where: {
-            username
+            id
         }
     })
 
     if (!userFound){
-        return res.status(400).json({error: "user not found"});
+        return res.status(400).json({error: "Usuário não existe"});
     }
-
-    req.user = userFound;
+    
     next();
 }

@@ -16,12 +16,14 @@ routesUsers.post('/users', UserController.addUser);
 routesUsers.get('/users', UserController.listUsers);
 
 //deleta usuario
-routesUsers.delete('/users/:id');
+routesUsers.delete('/users/:id', checkExistsUserAccount, UserController.deleteUser);
+
+//atualiza campo especifico
+routesUsers.put('/users/:id');
 
 //atualiza usuario
 routesUsers.patch('/users/:id');
 
-//atualiza campo especifico
-routesUsers.put('/users/:id');
+
 
 export {routesUsers}

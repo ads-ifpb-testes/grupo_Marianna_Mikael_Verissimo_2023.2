@@ -14,9 +14,16 @@ const listUsers = async (req: Request, res: Response): Promise<Response> => {
     return res.status(200).json(users);
 }
 
+const deleteUser =async (req: Request, res: Response): Promise<Response> => {
+    const { id } = req.params;
+    
+    await userServices.userDelete(id);
+
+    return res.status(201).json({message: "Usuário deletado com sucesso"});
+}
+
 export const UserController = {
     addUser,
     listUsers,   
-    //create,
-    //read
+    deleteUser,
 }
