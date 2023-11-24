@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { v4 as uuid} from "uuid";
 import { prisma } from "../database/repositoryUser";
+import { Usuario } from "../model/Usuario";
 const jwt = require('jsonwebtoken');
 
 
@@ -29,9 +30,37 @@ const create = async (nome:string, username: string, senha: string, telefone: st
     console.log('Token criado:', token);
 }
 
+const findAll = async (): Promise<Usuario[]> => {
+    const users = await prisma.usuario.findMany({
+        include:{
+            imoveis:{
+                select:{
+                    id: true,
+                    nome: true,
+                    latitude: true,
+                    longitude: true,
+                    tipo: true,
+                    descricao: true,
+                    preco: true,
+                    disponivel: true,
+                    avaliacao: true,
+                    numInquilinos: true,
+                    imagens:{
+                        select:{
+                            nomeImagem: true,
+                        }
+                    }
+                }
+            }
+        }
+    })
+    console.log(users);
+    return users;
+}
+
 export const userServices = {
     create,
-    // findAll,
+    findAll,
     // findByUsername,
     // findById
 }

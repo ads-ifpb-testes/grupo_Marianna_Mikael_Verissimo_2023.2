@@ -8,7 +8,15 @@ const addUser = async (req: Request, res: Response) => {
     return res.status(201).json({ mensagem: 'Usuario cadastrado com sucesso!' });
 }
 
+const listUsers = async (req: Request, res: Response): Promise<Response> => {
+    const users = await userServices.findAll();
+
+    return res.status(200).json(users);
+}
+
 export const UserController = {
-    addUser,    //create
-    // listUsers,  //read
+    addUser,
+    listUsers,   
+    //create,
+    //read
 }
