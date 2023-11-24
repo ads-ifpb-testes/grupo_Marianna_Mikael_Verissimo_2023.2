@@ -18,11 +18,13 @@ routesUsers.get('/users', UserController.listUsers);
 //deleta usuario
 routesUsers.delete('/users/:id', checkExistsUserAccount, UserController.deleteUser);
 
+//atualiza usuario
+routesUsers.patch('/users/:id', checkExistsUserAccount, UserController.update);
+
 //atualiza campo especifico
 routesUsers.put('/users/:id');
 
-//atualiza usuario
-routesUsers.patch('/users/:id');
+
 
 
 

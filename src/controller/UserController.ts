@@ -1,3 +1,4 @@
+import { Usuario } from "../model/Usuario";
 import { userServices } from "../services/userServices";
 import { Request, Response } from "express";
 
@@ -14,7 +15,7 @@ const listUsers = async (req: Request, res: Response): Promise<Response> => {
     return res.status(200).json(users);
 }
 
-const deleteUser =async (req: Request, res: Response): Promise<Response> => {
+const deleteUser = async (req: Request, res: Response): Promise<Response> => {
     const { id } = req.params;
     
     await userServices.userDelete(id);
@@ -22,8 +23,17 @@ const deleteUser =async (req: Request, res: Response): Promise<Response> => {
     return res.status(201).json({message: "Usuário deletado com sucesso"});
 }
 
+const update = async (req: Request, res: Response): Promise<Response> => {
+    const { id } = req.params;
+    const { nome, username, senha, telefone, email } = req.body;
+
+    const usuario = await userServices.update(id, nome, username, senha, telefone, email);
+    return res.status(200).json(usuario);
+}
+
 export const UserController = {
     addUser,
     listUsers,   
     deleteUser,
+    update,
 }
