@@ -84,7 +84,19 @@ const update = async (id: string, nome:string, username: string, senha: string, 
     const token = jwt.sign(userNew, userNew.senha, { expiresIn: '1d' });
     console.log('Token atualizado:', token);
     return userNew;
+}
 
+const passwordUpdate =  async (id: string, senha: string) => {
+    const user = await prisma.usuario.update({
+        where:{
+            id
+        },
+        data:{
+            senha
+        }
+    })
+    const token = jwt.sign(user, user.senha, { expiresIn: '1d' });
+    console.log('Token atualizado:', token);
 }
 
 
@@ -93,6 +105,5 @@ export const userServices = {
     findAll,
     userDelete,
     update,
-    // findByUsername,
-    // findById
+    passwordUpdate,
 }

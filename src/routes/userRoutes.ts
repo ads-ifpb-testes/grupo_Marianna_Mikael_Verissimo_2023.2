@@ -21,8 +21,8 @@ routesUsers.delete('/users/:id', checkExistsUserAccount, UserController.deleteUs
 //atualiza usuario
 routesUsers.patch('/users/:id', checkExistsUserAccount, UserController.update);
 
-//atualiza campo especifico
-routesUsers.put('/users/:id');
+//atualiza senha de usuário
+routesUsers.put('/users/:id', checkExistsUserAccount, UserController.passwordUpdate);
 
 
 
