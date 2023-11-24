@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "tsx watch src/server.ts"
   },
   "keywords": [],
   "author": "",
@@ -14,9 +15,15 @@
     "typescript": "^5.3.2"
   },
   "dependencies": {
+    "-": "^0.0.1",
     "@prisma/client": "^5.6.0",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/jsonwebtoken": "^9.0.5",
     "@types/node": "^20.9.4",
+    "D": "^1.0.0",
+    "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
     "multer": "^1.4.5-lts.1",
     "tsx": "^4.4.0",
     "uuidv4": "^6.2.13"

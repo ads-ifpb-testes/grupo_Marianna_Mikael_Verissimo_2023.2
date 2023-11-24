@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -20,7 +17,7 @@ model Usuario {
 
   imoveis Imovel[]
 
-  @@map("Usuário")
+  @@map("Usuario")
 }
 
 model Imovel{
@@ -40,7 +37,7 @@ model Imovel{
 
   imagens Imagens[]
 
-  @@map("Imóvel") 
+  @@map("Imovel") 
 }
 
 model Imagens {
