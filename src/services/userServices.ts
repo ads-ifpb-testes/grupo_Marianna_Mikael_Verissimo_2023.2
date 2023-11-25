@@ -4,6 +4,10 @@ import { prisma } from "../database/repositoryUser";
 import { Usuario } from "../model/Usuario";
 const jwt = require('jsonwebtoken');
 
+const generateToken = (user: Usuario) => {
+    const token = jwt.sign( user, user.senha , { expiresIn: '1d' });
+    return token;
+  };
 
 const create = async (nome:string, username: string, senha: string, telefone: string, email: string) => {
     const user = await prisma.usuario.findUnique({
@@ -26,8 +30,9 @@ const create = async (nome:string, username: string, senha: string, telefone: st
         }
     })
 
-    const token = jwt.sign(userNew, userNew.senha, { expiresIn: '1d' });
+    const token = generateToken(userNew);
     console.log('Token criado:', token);
+    return {message: "Usuário cadastrado com sucesso!"}
 }
 
 const findAll = async (): Promise<Usuario[]> => {
@@ -66,7 +71,15 @@ const userDelete = async (id: string):Promise<void> => {
     })
 }
 
-const update = async (id: string, nome:string, username: string, senha: string, telefone: string, email: string): Promise<Usuario> => {
+const update = async (id: string, nome:string, username: string, senha: string, telefone: string, email: string) => {
+    const oldUser = await prisma.usuario.findUnique({
+        where:{
+            username
+        }
+    })
+    if(oldUser){
+        return {message: "Usuario já existe"};
+    }
     const userNew = await prisma.usuario.update({
         where:{
             id
@@ -81,7 +94,7 @@ const update = async (id: string, nome:string, username: string, senha: string, 
         }
     })
 
-    const token = jwt.sign(userNew, userNew.senha, { expiresIn: '1d' });
+    const token = generateToken(userNew)
     console.log('Token atualizado:', token);
     return userNew;
 }
