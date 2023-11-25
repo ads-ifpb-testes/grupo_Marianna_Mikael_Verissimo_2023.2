@@ -99,6 +99,36 @@ const passwordUpdate =  async (id: string, senha: string) => {
     console.log('Token atualizado:', token);
 }
 
+const findByUsername = async (username: string) => {
+    const user = await prisma.usuario.findUnique({
+        where:{
+            username
+        },
+        include:{
+            imoveis:{
+                select:{
+                    id: true,
+                    nome: true,
+                    latitude: true,
+                    longitude: true,
+                    tipo: true,
+                    descricao: true,
+                    preco: true,
+                    disponivel: true,
+                    avaliacao: true,
+                    numInquilinos: true,
+                    imagens:{
+                        select:{
+                            nomeImagem: true,
+                        }
+                    }
+                }
+            }
+        }
+    })
+    return user;
+}
+
 
 export const userServices = {
     create,
@@ -106,4 +136,5 @@ export const userServices = {
     userDelete,
     update,
     passwordUpdate,
+    findByUsername,
 }

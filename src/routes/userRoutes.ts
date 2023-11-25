@@ -24,6 +24,9 @@ routesUsers.patch('/users/:id', checkExistsUserAccount, UserController.update);
 //atualiza senha de usuário
 routesUsers.put('/users/:id', checkExistsUserAccount, UserController.passwordUpdate);
 
+//busca usuario por username
+routesUsers.get('/users/:username', UserController.findUser);
+
 
 
 
