@@ -2,7 +2,7 @@ import { Usuario } from "../model/Usuario";
 import { userServices } from "../services/userServices";
 import { Request, Response } from "express";
 
-const addUser = async (req: Request, res: Response) => {
+const addUser = async (req: Request, res: Response): Promise<Response> => {
     const { nome, username, senha, telefone, email } = req.body;
 
     const resp = await userServices.create(nome, username, senha, telefone, email);
@@ -17,10 +17,10 @@ const listUsers = async (req: Request, res: Response): Promise<Response> => {
 
 const deleteUser = async (req: Request, res: Response): Promise<Response> => {
     const { id } = req.params;
-    
+
     await userServices.userDelete(id);
 
-    return res.status(201).json({message: "Usuário deletado com sucesso!"});
+    return res.status(201).json({ message: "Usuário deletado com sucesso!" });
 }
 
 const update = async (req: Request, res: Response): Promise<Response> => {
@@ -36,7 +36,7 @@ const passwordUpdate = async (req: Request, res: Response): Promise<Response> =>
     const { senha } = req.body;
 
     await userServices.passwordUpdate(id, senha);
-    return res.status(200).json({message: "Senha atualizada com sucesso!"})
+    return res.status(200).json({ message: "Senha atualizada com sucesso!" })
 }
 
 const findUser = async (req: Request, res: Response) => {
@@ -48,7 +48,7 @@ const findUser = async (req: Request, res: Response) => {
 
 export const UserController = {
     addUser,
-    listUsers,   
+    listUsers,
     deleteUser,
     update,
     passwordUpdate,

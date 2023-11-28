@@ -1,4 +1,5 @@
 
 export type Imagens = {
-    nomeImagem: string;
-  }
+  id: string;
+  nomeImagem: string;
+}

@@ -12,8 +12,8 @@ model Usuario {
   nome     String
   username String @unique
   senha    String
-  telefone String
-  email    String
+  telefone String @unique
+  email    String @unique
 
   imoveis   Imovel[]
   createdAt DateTime @default(now())
@@ -31,7 +31,7 @@ model Imovel {
   descricao     String
   preco         Float
   disponivel    Boolean  @default(true)
-  avaliacao     Int
+  avaliacao     Float
   numInquilinos Int
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
@@ -45,7 +45,8 @@ model Imovel {
 }
 
 model Imagem {
-  nomeImagem String @id
+  id         String @id @default(uuid())
+  nomeImagem String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
