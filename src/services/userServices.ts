@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { v4 as uuid} from "uuid";
-import { prisma } from "../database/repositoryUser";
+import { prisma } from "../database/prisma.client";
 import { Usuario } from "../model/Usuario";
 const jwt = require('jsonwebtoken');
 

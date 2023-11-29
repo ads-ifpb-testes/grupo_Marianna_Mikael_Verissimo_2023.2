@@ -1,6 +1,6 @@
 import { Router } from "express";
 // TODO import middlewares
-import { imovelController } from "../controller/imovelController";
+// import { imovelController } from "../controller/imovelController";
 const imovelRouter = Router()
 /*
 router.get('/', checkExistsUserAccount, imovelController.listUserTechs)

@@ -1,11 +1,8 @@
 import { Request, Response } from "express";
+import { ImovelHandle } from "../services/imovelServices";
 
-
-
-export const imovelController = {
-    // listAll,
-    // create,
-    // update,
-    // patchStatus,
-    // delete
-}
+// export class ImovelController {
+//   add(req: Request, res: Response){
+    
+//   }
+// }
