@@ -1,13 +1,17 @@
 import { Router } from "express";
-// TODO import middlewares
-// import { imovelController } from "../controller/imovelController";
-const imovelRouter = Router()
-/*
-router.get('/', checkExistsUserAccount, imovelController.listUserTechs)
-router.post('/', checkExistsUserAccount, imovelController.createUserTech)
-router.put("/:id", checkExistsUserAccount, checkTechIdExists, imovelController.updateTitleDeadline)
-router.patch("/:id/studied", checkExistsUserAccount, checkTechIdExists, imovelController.updateStudied)
-router.delete("/:id", checkExistsUserAccount, checkTechIdExists, imovelController.deleteTech)
-*/
+import checkEdificeExists from "../middlewares/checkEdificeExists";
+import { ImovelController } from "../controller/imovelController";
 
-export default imovelRouter
+const imovelRouter = Router();
+
+imovelRouter.post('/imoveis', checkEdificeExists, ImovelController.add);
+
+imovelRouter.get('/imoveis', ImovelController.list);
+
+imovelRouter.delete("/imoveis/:id", checkEdificeExists, ImovelController.delete);
+
+// router.put("/:id", checkExistsUserAccount, checkTechIdExists, imovelController.updateTitleDeadline)
+// router.patch("/:id/studied", checkExistsUserAccount, checkTechIdExists, imovelController.updateStudied)
+
+
+export default imovelRouter;

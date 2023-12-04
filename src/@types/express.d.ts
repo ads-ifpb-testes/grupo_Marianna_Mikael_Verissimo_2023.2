@@ -12,7 +12,7 @@ type Imovel = {
 }
 
 type Usuario = {
-    id: string,
+  id: string,
   nome: string,
   username: string,
   senha: string,
@@ -21,11 +21,12 @@ type Usuario = {
 }
 
 type Imagens = {
-    nomeImagem: string
+  nomeImagem: string
 }
 
 declare namespace Express{
-    export interface Request{
-        user: Usuario;
-    }
+  export interface Request{
+    user: Usuario;
+    imovel: Imovel
+  }
 }
