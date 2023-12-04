@@ -24,7 +24,7 @@ export class ImovelController {
 
   static async findByName(req: Request, res: Response){
     const { nome } = req.params as { nome: string };
-
+  
     const resp = await ImovelHandle.findByName(nome);
 
     res.status(200).json(resp);
@@ -32,10 +32,12 @@ export class ImovelController {
 
   static async findByLocale(req: Request, res: Response){
     const coords = req.body as { lng: number, lat: number };
+    console.log(coords);
+    
 
     const resp = await ImovelHandle.findByLocale(coords);
 
-    res.status(200).json(resp);
+    res.status(resp.status).json(resp.message);
   }
 
   static async updateName(req: Request, res: Response){

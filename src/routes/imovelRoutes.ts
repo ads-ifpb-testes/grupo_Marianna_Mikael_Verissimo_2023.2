@@ -7,9 +7,9 @@ const imovelRouter = Router();
 imovelRouter.post('/imoveis', checkEdificeExists, ImovelController.add);
 
 imovelRouter.get('/imoveis', ImovelController.list);
-imovelRouter.get('/imoveis/:tipo', ImovelController.findByType);
-imovelRouter.get('/imoveis/:nome', ImovelController.findByName);
-imovelRouter.get('/imoveis', ImovelController.findByLocale);
+imovelRouter.get('/imoveis/tipo/:tipo', ImovelController.findByType);
+imovelRouter.get('/imoveis/nome/:nome', ImovelController.findByName);
+imovelRouter.get('/imoveis/local', ImovelController.findByLocale);
 
 imovelRouter.delete("/imoveis/:id", checkEdificeExists, ImovelController.delete);
 

@@ -57,7 +57,7 @@ export class ImovelHandle {
     const filtered = imoveis.filter( imovel => {
       isWithin({ lng: imovel.longitude, lat: imovel.latitude },
                coords,
-               1000
+               0.05
         )
     });
 
