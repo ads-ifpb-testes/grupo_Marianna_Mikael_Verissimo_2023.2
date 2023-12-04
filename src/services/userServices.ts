@@ -48,7 +48,6 @@ const findAll = async (): Promise<Usuario[]> => {
                     descricao: true,
                     preco: true,
                     disponivel: true,
-                    avaliacao: true,
                     numInquilinos: true,
                     imagens:{
                         select:{
@@ -128,7 +127,6 @@ const findByUsername = async (username: string) => {
                     descricao: true,
                     preco: true,
                     disponivel: true,
-                    avaliacao: true,
                     numInquilinos: true,
                     imagens:{
                         select:{

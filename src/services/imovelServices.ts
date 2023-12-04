@@ -16,7 +16,6 @@ export class ImovelHandle {
         descricao: infos.descricao,
         preco: infos.preco,
         disponivel: infos.disponivel,
-        avaliacao: infos.avaliacao,
         numInquilinos: infos.numInquilinos,
         // userId: user.id                  // quando o usuario estiver logado deve armazena-lo na requisição
       }

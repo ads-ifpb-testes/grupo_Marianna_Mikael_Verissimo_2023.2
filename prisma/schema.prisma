@@ -31,7 +31,6 @@ model Imovel {
   descricao     String
   preco         Float
   disponivel    Boolean  @default(true)
-  avaliacao     Float
   numInquilinos Int
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt

@@ -1,3 +1,4 @@
+import { Imagem } from "./Imagem";
 export type Imovel = {
     id: string;
     nome: string;
@@ -7,8 +8,9 @@ export type Imovel = {
     descricao: string;
     preco: number;
     disponivel: boolean;
-    avaliacao: number;
     numInquilinos: number;
-    imagens?: Imagens[];
   }
   
+  export interface ImovelDTO extends Imovel {
+    imagens?: Imagem[];
+  }

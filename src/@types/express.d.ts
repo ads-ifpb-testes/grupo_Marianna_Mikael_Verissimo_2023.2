@@ -1,31 +1,9 @@
-type Imovel = {
-  id: string,
-  nome: string
-  latitude: number,
-  longitude: number,
-  tipo: string
-  descricao: string,
-  preco: number,
-  disponivel: boolean
-  avaliacao: number
-  numInquilinos: number
-}
+import { Imovel } from "../model/Imovel";
+import { Usuario } from "../model/Usuario"
+import { Imagem } from "../model/Imagem"
 
-type Usuario = {
-  id: string,
-  nome: string,
-  username: string,
-  senha: string,
-  telefone: string,
-  email: string
-}
-
-type Imagens = {
-  nomeImagem: string
-}
-
-declare namespace Express{
-  export interface Request{
+declare namespace Express {
+  export interface Request {
     user: Usuario;
     imovel: Imovel
   }
