@@ -6,7 +6,7 @@ const userData: Prisma.UsuarioCreateInput[] = [
     {
         nome: 'admin',
         email: 'admin@ifpb.com',
-        senha: 'admin',
+        senha: 'admin321',
         telefone: '83912345678',
         username: 'admin',
         imoveis: {

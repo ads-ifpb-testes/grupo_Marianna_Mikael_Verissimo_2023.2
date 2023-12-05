@@ -84,7 +84,6 @@ const update = async (id: string, nome:string, username: string, senha: string, 
             id
         },
         data:{
-            id: uuid(),
             nome,
             username,
             senha,

@@ -1,7 +1,8 @@
 import { prisma } from "../database/prisma.client";
-import { v4 as uuid} from "uuid";
+import { v4 as uuid } from "uuid";
 import { Imovel } from "../model/Imovel";
 import { Usuario } from "../model/Usuario";
+import { Coordinates } from "../model/Imovel";
 
 export class ImovelHandle {
   //C
@@ -34,7 +35,7 @@ export class ImovelHandle {
 
   static async findByName(nome: string) {
     const imoveis = await prisma.imovel.findMany({
-      where:{
+      where: {
         nome
       }
     });
@@ -43,22 +44,23 @@ export class ImovelHandle {
 
   static async findByType(tipo: string) {
     const imoveis = await prisma.imovel.findMany({
-      where:{
+      where: {
         tipo
       }
     });
     return imoveis;
   }
 
-  static async findByLocale(coords: {lng: number, lat: number}){
+  static async findByLocale(coords: Coordinates, radius: number) {
     const imoveis = await prisma.imovel.findMany();
 
-    const filtered = imoveis.filter( imovel => {
-      isWithin({ lng: imovel.longitude, lat: imovel.latitude },
-               coords,
-               0.05
-        )
-    });
+    const filtered = imoveis.filter(imovel =>
+      isWithin(
+        { longitude: imovel.longitude, latitude: imovel.latitude },
+        coords,
+        radius
+      )
+    );
 
     return {
       status: 200,
@@ -66,7 +68,7 @@ export class ImovelHandle {
     }
   }
   //U
-  static async updateName(name: string, id: string){
+  static async updateName(name: string, id: string) {
     const imovel = await prisma.imovel.update({
       where: { id },
       data: {
@@ -80,12 +82,12 @@ export class ImovelHandle {
     }
   }
 
-  static async updateLocale(coords: {lat: number, lng: number}, id: string){
+  static async updateLocale(coords: { latitude: number, longitude: number }, id: string) {
     const imovel = await prisma.imovel.update({
       where: { id },
       data: {
-        latitude: coords.lat,
-        longitude: coords.lng
+        latitude: coords.latitude,
+        longitude: coords.longitude
       }
     });
 
@@ -94,8 +96,8 @@ export class ImovelHandle {
       message: 'Modificado com sucesso!'
     }
   }
-  
-  static async updateAvailability(mod: boolean, id: string){
+
+  static async updateAvailability(mod: boolean, id: string) {
     const imovel = await prisma.imovel.update({
       where: { id },
       data: {
@@ -109,11 +111,11 @@ export class ImovelHandle {
     }
   }
   //D
-  static async delete(id: string){
+  static async delete(id: string) {
     const imovel = await prisma.imovel.delete({
-        where:{
-            id
-        }
+      where: {
+        id
+      }
     });
     return {
       status: 200,
@@ -122,18 +124,18 @@ export class ImovelHandle {
   }
 }
 
-function isWithin(point: { lng: number; lat: number }, center: { lng: number; lat: number }, radiusKm: number): boolean {
+function isWithin(point: Coordinates, center: Coordinates, radiusKm: number): boolean {
   function toRadians(degrees: number): number {
     return degrees * (Math.PI / 180);
   }
 
-  const earthRadius = 6371; 
-  const dLat = toRadians(point.lat - center.lat);
-  const dLon = toRadians(point.lng - center.lng);
+  const earthRadius = 6371;
+  const dLat = toRadians(point.latitude - center.latitude);
+  const dLon = toRadians(point.longitude - center.longitude);
 
   const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-            Math.cos(toRadians(center.lat)) * Math.cos(toRadians(point.lat)) *
-            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    Math.cos(toRadians(center.latitude)) * Math.cos(toRadians(point.latitude)) *
+    Math.sin(dLon / 2) * Math.sin(dLon / 2);
 
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 

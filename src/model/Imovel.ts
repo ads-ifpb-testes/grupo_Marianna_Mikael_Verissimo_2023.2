@@ -1,16 +1,23 @@
 import { Imagem } from "./Imagem";
-export type Imovel = {
-    id: string;
-    nome: string;
-    latitude: number;
-    longitude: number;
-    tipo: string;
-    descricao: string;
-    preco: number;
-    disponivel: boolean;
-    numInquilinos: number;
-  }
-  
-  export interface ImovelDTO extends Imovel {
-    imagens?: Imagem[];
-  }
+export interface Imovel extends ImovelBody {
+  id: string;
+  disponivel: boolean;
+}
+
+export interface ImovelDTO extends Imovel {
+  imagens?: Imagem[];
+}
+export interface ImovelBody {
+  nome: string;
+  latitude: number;
+  longitude: number;
+  tipo: string;
+  descricao: string;
+  preco: number;
+  numInquilinos: number;
+}
+
+export type Coordinates = {
+  latitude: number,
+  longitude: number
+}

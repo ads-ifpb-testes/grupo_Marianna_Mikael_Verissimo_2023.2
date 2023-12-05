@@ -1,5 +1,6 @@
 //middleware
 import { checkExistsUserAccount } from "../middlewares/checkExistsUserAccount";
+import validateUsuario from "../middlewares/validateUsuario";
 
 //controller
 import { UserController } from "../controller/UserController";
@@ -10,7 +11,7 @@ import { Router } from "express";
 const routesUsers = Router();
 
 //cria novo usuario
-routesUsers.post('/users', UserController.addUser);
+routesUsers.post('/users', validateUsuario.new, UserController.addUser);
 
 //retorna todos os usuarios
 routesUsers.get('/users', UserController.listUsers);
@@ -19,10 +20,10 @@ routesUsers.get('/users', UserController.listUsers);
 routesUsers.delete('/users/:id', checkExistsUserAccount, UserController.deleteUser);
 
 //atualiza usuario
-routesUsers.patch('/users/:id', checkExistsUserAccount, UserController.update);
+routesUsers.put('/users/:id', validateUsuario.new, checkExistsUserAccount, UserController.update);
 
 //atualiza senha de usuário
-routesUsers.put('/users/:id', checkExistsUserAccount, UserController.passwordUpdate);
+routesUsers.patch('/users/:id/password', validateUsuario.password, checkExistsUserAccount, UserController.passwordUpdate);
 
 //busca usuario por username
 routesUsers.get('/users/:username', UserController.findUser);
@@ -31,4 +32,4 @@ routesUsers.get('/users/:username', UserController.findUser);
 
 
 
-export {routesUsers}
+export { routesUsers }
