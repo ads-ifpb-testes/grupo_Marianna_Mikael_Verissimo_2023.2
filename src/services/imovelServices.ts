@@ -4,6 +4,7 @@ import { Imovel } from "../model/Imovel";
 import { Usuario } from "../model/Usuario";
 import { Coordinates } from "../model/Imovel";
 import { Imagem } from "../model/Imagem";
+import { deleteFile } from "../utils/file";
 
 export class ImovelHandle {
   //C
@@ -139,6 +140,26 @@ export class ImovelHandle {
       message: 'Modificado com sucesso!',
       imovel
     }
+  }
+  static async deleteImage(id_imovel: string, nomeImagem: string) {
+    try {
+      const imagem = await prisma.imagem.findFirst({
+        where: { imovelId: id_imovel, nomeImagem }
+      });
+      await prisma.imagem.delete({
+        where: { id: imagem?.id }
+      })
+      await deleteFile(`./tmp/imovelImage/${nomeImagem}`)
+
+    } catch (error) {
+      return { message: "falha ao deletar imagem.", error, status: 404 }
+    }
+
+    return {
+      status: 200,
+      message: "imagem deletada"
+    }
+
   }
 }
 
