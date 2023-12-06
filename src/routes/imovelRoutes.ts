@@ -24,6 +24,6 @@ imovelRouter.patch('/imoveis/:id/local', checkEdificeIdExists, validateImovel.lo
 imovelRouter.patch('/imoveis/:id/disponivel', checkEdificeIdExists, validateImovel.disponivel, ImovelController.updateAvailability);
 
 //rota relativa às imagens
-imovelRouter.patch("/imoveis/:id/images", checkEdificeIdExists, uploadImage.array("images"), ImovelController.handleUpload)
+imovelRouter.post("/imoveis/:id/images", checkEdificeIdExists, uploadImage.array("images"), ImovelController.handleUpload)
 
 export default imovelRouter;

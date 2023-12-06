@@ -1,4 +1,4 @@
-import { v4 as uuid} from "uuid";
+import { v4 as uuid } from "uuid";
 import { prisma } from "../database/prisma.client";
 import { Usuario } from "../model/Usuario";
 const jwt = require('jsonwebtoken');
@@ -8,60 +8,63 @@ import { sign } from "jsonwebtoken";
 
 const loginUser = async (username: string, senha: string) => {
     const userExist = await prisma.usuario.findUnique({
-        where:{
+        where: {
             username
         }
     })
-    if (!userExist){
-        return {message: "Usuário não existe"}
+    if (!userExist) {
+        return { message: "Usuário não existe" }
     }
-    
+
     const verifica = await compare(senha, userExist.senha);
 
-    if(!verifica){
-        return {message: "Username ou senha inválidos"}
+    if (!verifica) {
+        return { message: "Username ou senha inválidos" }
     }
 
     const { nome } = userExist;
-    const token = sign({nome}, process.env.SECRET as string, {
+    const token = sign({ nome }, process.env.SECRET as string, {
         expiresIn: '5h', subject: userExist.id
     })
-     return(token)
+    return (token)
 }
 
 
-const create = async (nome:string, username: string, senha: string, telefone: string, email: string) => {
+const create = async (nome: string, username: string, senha: string, telefone: string, email: string) => {
     const user = await prisma.usuario.findUnique({
-        where:{
+        where: {
             username
         }
     })
-    if(user){
-        return {message: "Usuario já existe"};
+    if (user) {
+        return { message: "Usuario já existe" };
     }
 
-    const senhaCriptografada = await hash(senha,5);
-    
-    await prisma.usuario.create({
-        data:{
-            id: uuid(),
-            nome,
-            username,
-            senha: senhaCriptografada,
-            telefone,
-            email,
-            imoveis:{}
-        }
-    })
+    const senhaCriptografada = await hash(senha, 5);
+    try {
+        await prisma.usuario.create({
+            data: {
+                id: uuid(),
+                nome,
+                username,
+                senha: senhaCriptografada,
+                telefone,
+                email,
+                imoveis: {}
+            }
+        })
+    } catch (error) {
+        return { message: "Alguma restrição do banco de dados violada", error }
+    }
 
-    return {message: "Usuário cadastrado com sucesso!"}
+    return { message: "Usuário cadastrado com sucesso!" }
 }
 
 const findAll = async (): Promise<Usuario[]> => {
     const users = await prisma.usuario.findMany({
-        include:{
-            imoveis:{
-                select:{
+        include: {
+            imoveis: {
+                select: {
                     id: true,
                     nome: true,
                     latitude: true,
@@ -71,8 +74,8 @@ const findAll = async (): Promise<Usuario[]> => {
                     preco: true,
                     disponivel: true,
                     numInquilinos: true,
-                    imagens:{
-                        select:{
+                    imagens: {
+                        select: {
                             nomeImagem: true,
                         }
                     }
@@ -84,30 +87,30 @@ const findAll = async (): Promise<Usuario[]> => {
     return users;
 }
 
-const userDelete = async (id: string):Promise<void> => {
+const userDelete = async (id: string): Promise<void> => {
     const user = await prisma.usuario.delete({
-        where:{
+        where: {
             id
         }
     })
 }
 
-const update = async (id: string, nome:string, username: string, senha: string, telefone: string, email: string) => {
+const update = async (id: string, nome: string, username: string, senha: string, telefone: string, email: string) => {
     const oldUser = await prisma.usuario.findUnique({
-        where:{
+        where: {
             username
         }
     })
-    if(oldUser){
-        return {message: "Usuario já existe"};
+    if (oldUser) {
+        return { message: "Usuario já existe" };
     }
-    const senhaCriptografada = await hash(senha,5);
+    const senhaCriptografada = await hash(senha, 5);
 
     const userNew = await prisma.usuario.update({
-        where:{
+        where: {
             id
         },
-        data:{
+        data: {
             nome,
             username,
             senha: senhaCriptografada,
@@ -119,13 +122,13 @@ const update = async (id: string, nome:string, username: string, senha: string, 
     return userNew;
 }
 
-const passwordUpdate =  async (id: string, senha: string) => {
-    const senhaCriptografada = await hash(senha,5);
+const passwordUpdate = async (id: string, senha: string) => {
+    const senhaCriptografada = await hash(senha, 5);
     const user = await prisma.usuario.update({
-        where:{
+        where: {
             id
         },
-        data:{
+        data: {
             senha: senhaCriptografada
         }
     })
@@ -133,12 +136,12 @@ const passwordUpdate =  async (id: string, senha: string) => {
 
 const findByUsername = async (username: string) => {
     const user = await prisma.usuario.findUnique({
-        where:{
+        where: {
             username
         },
-        include:{
-            imoveis:{
-                select:{
+        include: {
+            imoveis: {
+                select: {
                     id: true,
                     nome: true,
                     latitude: true,
@@ -148,8 +151,8 @@ const findByUsername = async (username: string) => {
                     preco: true,
                     disponivel: true,
                     numInquilinos: true,
-                    imagens:{
-                        select:{
+                    imagens: {
+                        select: {
                             nomeImagem: true,
                         }
                     }
