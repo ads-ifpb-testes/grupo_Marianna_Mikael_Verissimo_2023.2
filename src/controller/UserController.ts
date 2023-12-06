@@ -1,6 +1,12 @@
-import { Usuario } from "../model/Usuario";
 import { userServices } from "../services/userServices";
 import { Request, Response } from "express";
+
+const login = async (req: Request, res: Response): Promise<Response> => {
+    const { username, senha } = req.body;
+
+    const token = await userServices.loginUser(username, senha);
+    return res.status(200).json(token);
+}
 
 const addUser = async (req: Request, res: Response): Promise<Response> => {
     const { nome, username, senha, telefone, email } = req.body;
@@ -47,6 +53,7 @@ const findUser = async (req: Request, res: Response) => {
 }
 
 export const UserController = {
+    login,
     addUser,
     listUsers,
     deleteUser,

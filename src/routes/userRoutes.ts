@@ -10,6 +10,9 @@ import { Router } from "express";
 
 const routesUsers = Router();
 
+//usuario realiza login no sistema
+routesUsers.post('/users/login', UserController.login);
+
 //cria novo usuario
 routesUsers.post('/users', validateUsuario.new, UserController.addUser);
 

@@ -1,13 +1,34 @@
-import { Request, Response } from "express";
 import { v4 as uuid} from "uuid";
 import { prisma } from "../database/prisma.client";
 import { Usuario } from "../model/Usuario";
 const jwt = require('jsonwebtoken');
+require('dotenv').config();
+import { compare, hash } from "bcrypt";
+import { sign } from "jsonwebtoken";
 
-const generateToken = (user: Usuario) => {
-    const token = jwt.sign( user, user.senha , { expiresIn: '1d' });
-    return token;
-  };
+const loginUser = async (username: string, senha: string) => {
+    const userExist = await prisma.usuario.findUnique({
+        where:{
+            username
+        }
+    })
+    if (!userExist){
+        return {message: "Usuário não existe"}
+    }
+    
+    const verifica = await compare(senha, userExist.senha);
+
+    if(!verifica){
+        return {message: "Username ou senha inválidos"}
+    }
+
+    const { nome } = userExist;
+    const token = sign({nome}, process.env.SECRET as string, {
+        expiresIn: '5h', subject: userExist.id
+    })
+     return(token)
+}
+
 
 const create = async (nome:string, username: string, senha: string, telefone: string, email: string) => {
     const user = await prisma.usuario.findUnique({
@@ -18,20 +39,21 @@ const create = async (nome:string, username: string, senha: string, telefone: st
     if(user){
         return {message: "Usuario já existe"};
     }
-    const userNew = await prisma.usuario.create({
+
+    const senhaCriptografada = await hash(senha,5);
+    
+    await prisma.usuario.create({
         data:{
             id: uuid(),
             nome,
             username,
-            senha,
+            senha: senhaCriptografada,
             telefone,
             email,
             imoveis:{}
         }
     })
 
-    const token = generateToken(userNew);
-    console.log('Token criado:', token);
     return {message: "Usuário cadastrado com sucesso!"}
 }
 
@@ -92,8 +114,6 @@ const update = async (id: string, nome:string, username: string, senha: string, 
         }
     })
 
-    const token = generateToken(userNew)
-    console.log('Token atualizado:', token);
     return userNew;
 }
 
@@ -141,6 +161,7 @@ const findByUsername = async (username: string) => {
 
 
 export const userServices = {
+    loginUser,
     create,
     findAll,
     userDelete,
