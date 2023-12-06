@@ -161,6 +161,21 @@ export class ImovelHandle {
     }
 
   }
+  static async getImages(id: string) {
+    let imagens
+    try {
+      imagens = await prisma.imagem.findMany({
+        where: { imovelId: id }
+      })
+    } catch (error) {
+      return { message: "falha ao procurar imagens.", error, status: 404 }
+    }
+    return {
+      status: 200,
+      message: "requisição completa com sucesso",
+      imagens
+    }
+  }
 }
 
 function isWithin(point: Coordinates, center: Coordinates, radiusKm: number): boolean {

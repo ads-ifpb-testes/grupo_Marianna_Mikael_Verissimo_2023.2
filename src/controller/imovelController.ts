@@ -95,4 +95,10 @@ export class ImovelController {
     const resp = await ImovelHandle.deleteImage(id as string, nomeImagem)
     return res.status(resp.status).send(resp.message)
   }
+
+  static async getImages(req: Request, res: Response) {
+    const { id } = req.params //id do imovel
+    const resp = await ImovelHandle.getImages(id)
+    return res.status(resp.status).send(resp)
+  }
 }
