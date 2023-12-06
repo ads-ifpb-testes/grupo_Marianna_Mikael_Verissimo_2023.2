@@ -3,6 +3,7 @@ import { v4 as uuid } from "uuid";
 import { Imovel } from "../model/Imovel";
 import { Usuario } from "../model/Usuario";
 import { Coordinates } from "../model/Imovel";
+import { Imagem } from "../model/Imagem";
 
 export class ImovelHandle {
   //C
@@ -120,6 +121,23 @@ export class ImovelHandle {
     return {
       status: 200,
       message: 'Imovel removido com sucesso'
+    }
+  }
+  static async uploadImg(id: string, imagens: Imagem[]) {
+
+    const imovel = await prisma.imovel.update({
+      where: { id },
+      data: {
+        imagens: {
+          create: [...imagens]
+        }
+      }
+    });
+
+    return {
+      status: 200,
+      message: 'Modificado com sucesso!',
+      imovel
     }
   }
 }
