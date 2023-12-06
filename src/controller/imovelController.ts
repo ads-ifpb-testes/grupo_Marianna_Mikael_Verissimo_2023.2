@@ -91,7 +91,7 @@ export class ImovelController {
 
   static async removeImage(req: Request, res: Response) {
     const { id } = req.params //id do imovel
-    const { nomeImagem } = req.body
+    const { nomeImagem } = req.body //imagem a ser removida do bd e memória
     const resp = await ImovelHandle.deleteImage(id as string, nomeImagem)
     return res.status(resp.status).send(resp.message)
   }
@@ -99,6 +99,14 @@ export class ImovelController {
   static async getImages(req: Request, res: Response) {
     const { id } = req.params //id do imovel
     const resp = await ImovelHandle.getImages(id)
+    return res.status(resp.status).send(resp)
+  }
+
+  static async updateImage(req: Request, res: Response) {
+    const { id } = req.params //id do imovel
+    const { nomeImagem } = req.body //imagem a ser removida do bd e memória
+    const imageRequest = req.file as Express.Multer.File
+    const resp = await ImovelHandle.updateImage(id, nomeImagem, imageRequest.filename)
     return res.status(resp.status).send(resp)
   }
 }

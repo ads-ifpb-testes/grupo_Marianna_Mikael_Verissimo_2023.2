@@ -143,9 +143,11 @@ export class ImovelHandle {
   }
   static async deleteImage(id_imovel: string, nomeImagem: string) {
     try {
-      const imagem = await prisma.imagem.findFirst({
-        where: { imovelId: id_imovel, nomeImagem }
-      });
+      const imagens = (await this.getImages(id_imovel)).imagens
+      const imagem = imagens?.find((img) => img.nomeImagem === nomeImagem)
+      if (!imagem) {
+        return { message: "imagem não encontrada.", status: 404 }
+      }
       await prisma.imagem.delete({
         where: { id: imagem?.id }
       })
@@ -174,6 +176,27 @@ export class ImovelHandle {
       status: 200,
       message: "requisição completa com sucesso",
       imagens
+    }
+  }
+  static async updateImage(id: string, nomeImagem: string, newImgFilename: string) {
+    await this.deleteImage(id, nomeImagem)
+    const newImg = {
+      id: undefined,
+      nomeImagem: newImgFilename
+    }
+    const imovel = await prisma.imovel.update({
+      where: { id },
+      data: {
+        imagens: {
+          create: newImg
+        }
+      }
+    });
+
+    return {
+      status: 200,
+      message: 'Modificado com sucesso!',
+      imovel
     }
   }
 }

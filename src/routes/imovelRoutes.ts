@@ -5,6 +5,7 @@ import { ImovelController } from "../controller/imovelController";
 import validateImovel from "../middlewares/validateImovel";
 import multer from 'multer';
 import uploadConfig from '../config/upload';
+import checkImageExists from "../middlewares/checkImageExists";
 
 const uploadImage = multer(uploadConfig.upload("./tmp/imovelImage"))
 
@@ -27,5 +28,6 @@ imovelRouter.patch('/imoveis/:id/disponivel', checkEdificeIdExists, validateImov
 imovelRouter.post("/imoveis/:id/images", checkEdificeIdExists, uploadImage.array("images"), ImovelController.handleUpload)
 imovelRouter.delete("/imoveis/:id/images", checkEdificeIdExists, ImovelController.removeImage)
 imovelRouter.get("/imoveis/:id/images", checkEdificeIdExists, ImovelController.getImages)
+imovelRouter.patch("/imoveis/:id/images", checkEdificeIdExists, checkImageExists, uploadImage.single("imagem"), ImovelController.updateImage )
 
 export default imovelRouter;
