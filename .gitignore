@@ -4,3 +4,4 @@ node_modules
 src/database/*.sqlite**
 prisma/migrations
 prisma/**.db
+tmp/imovelImage

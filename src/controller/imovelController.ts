@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { ImovelHandle } from "../services/imovelServices";
 import { Coordinates } from "../model/Imovel";
+import { Imagem } from "../model/Imagem";
+import { json } from "stream/consumers";
 
 export class ImovelController {
   static async add(req: Request, res: Response) {
@@ -39,8 +41,8 @@ export class ImovelController {
       return;
     }
     const resp = await ImovelHandle.findByLocale(coords, radius);
-    if(resp.message.length === 0) {
-      return res.status(200).json({message: `nenhum imóvel encontrado num raio de ${radius}Km` })
+    if (resp.message.length === 0) {
+      return res.status(200).json({ message: `nenhum imóvel encontrado num raio de ${radius}Km` })
     }
     res.status(resp.status).json(resp.message);
   }
@@ -76,6 +78,14 @@ export class ImovelController {
 
     const resp = await ImovelHandle.delete(id);
 
+    return res.status(resp.status).json(resp.message);
+  }
+
+  static async handleUpload(req: Request, res: Response) {
+    const imagesRequest = req.files as Express.Multer.File[]
+    const imagesPath = imagesRequest.map((img) => ({ nomeImagem: img.filename })) as Imagem[]
+    const { id } = req.params
+    const resp = await ImovelHandle.uploadImg(id, imagesPath)
     return res.status(resp.status).json(resp.message);
   }
 }
