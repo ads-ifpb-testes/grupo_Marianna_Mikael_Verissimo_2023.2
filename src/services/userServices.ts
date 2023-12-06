@@ -101,6 +101,8 @@ const update = async (id: string, nome:string, username: string, senha: string, 
     if(oldUser){
         return {message: "Usuario já existe"};
     }
+    const senhaCriptografada = await hash(senha,5);
+
     const userNew = await prisma.usuario.update({
         where:{
             id
@@ -108,7 +110,7 @@ const update = async (id: string, nome:string, username: string, senha: string, 
         data:{
             nome,
             username,
-            senha,
+            senha: senhaCriptografada,
             telefone,
             email
         }
@@ -118,16 +120,15 @@ const update = async (id: string, nome:string, username: string, senha: string, 
 }
 
 const passwordUpdate =  async (id: string, senha: string) => {
+    const senhaCriptografada = await hash(senha,5);
     const user = await prisma.usuario.update({
         where:{
             id
         },
         data:{
-            senha
+            senha: senhaCriptografada
         }
     })
-    const token = jwt.sign(user, user.senha, { expiresIn: '1d' });
-    console.log('Token atualizado:', token);
 }
 
 const findByUsername = async (username: string) => {
