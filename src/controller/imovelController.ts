@@ -106,6 +106,7 @@ export class ImovelController {
     const { id } = req.params //id do imovel
     const { nomeImagem } = req.body //imagem a ser removida do bd e memória
     const imageRequest = req.file as Express.Multer.File
+    
     const resp = await ImovelHandle.updateImage(id, nomeImagem, imageRequest.filename)
     return res.status(resp.status).send(resp)
   }

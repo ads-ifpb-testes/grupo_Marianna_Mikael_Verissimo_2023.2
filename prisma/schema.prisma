@@ -45,7 +45,7 @@ model Imovel {
 
 model Imagem {
   id         String @id @default(uuid())
-  nomeImagem String
+  nomeImagem String @unique
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

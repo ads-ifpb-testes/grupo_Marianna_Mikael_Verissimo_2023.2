@@ -178,25 +178,34 @@ export class ImovelHandle {
       imagens
     }
   }
-  static async updateImage(id: string, nomeImagem: string, newImgFilename: string) {
-    await this.deleteImage(id, nomeImagem)
-    const newImg = {
-      id: undefined,
-      nomeImagem: newImgFilename
-    }
-    const imovel = await prisma.imovel.update({
-      where: { id },
-      data: {
-        imagens: {
-          create: newImg
-        }
+  static async updateImage(id: string, oldImgFilename: string, newImgFilename: string) {
+    const exists = await prisma.imagem.findFirst({
+      where: {
+        imovelId: id,
+        nomeImagem: oldImgFilename
       }
     });
+    if (!exists) {
+      await deleteFile(`./tmp/imovelImage/${newImgFilename}`)
+      return {
+        status: 404,
+        message: "imagem a ser atualizada não existe"
+      };
+    }
+    await deleteFile(`./tmp/imovelImage/${oldImgFilename}`)
+
+    await prisma.imagem.update({
+      where: {
+        id: exists.id
+      },
+      data: {
+        nomeImagem: newImgFilename
+      }
+    })
 
     return {
       status: 200,
       message: 'Modificado com sucesso!',
-      imovel
     }
   }
 }
