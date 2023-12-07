@@ -210,7 +210,7 @@ export class ImovelHandle {
   }
 }
 
-function isWithin(point: Coordinates, center: Coordinates, radiusKm: number): boolean {
+export function isWithin(point: Coordinates, center: Coordinates, radiusKm: number): boolean {
   function toRadians(degrees: number): number {
     return degrees * (Math.PI / 180);
   }
