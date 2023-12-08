@@ -103,7 +103,7 @@ const userDelete = async (id: string) => {
     return {message: 'Usuário removido com sucesso'}
 }
 
-const update = async (id: string, nome: string, username: string, senha: string, telefone: string, email: string) => {
+const update = async (id: string, nome: string, username: string, telefone: string, email: string) => {
     const oldUser = await prisma.usuario.findUnique({
         where: {
             username
@@ -112,7 +112,6 @@ const update = async (id: string, nome: string, username: string, senha: string,
     if (oldUser) {
         return { message: "Usuario já existe" };
     }
-    const senhaCriptografada = await hash(senha, 5);
 
     const userNew = await prisma.usuario.update({
         where: {
@@ -121,7 +120,6 @@ const update = async (id: string, nome: string, username: string, senha: string,
         data: {
             nome,
             username,
-            senha: senhaCriptografada,
             telefone,
             email
         }
@@ -132,7 +130,7 @@ const update = async (id: string, nome: string, username: string, senha: string,
 
 const passwordUpdate = async (id: string, senha: string) => {
     const senhaCriptografada = await hash(senha, 5);
-    const user = await prisma.usuario.update({
+    await prisma.usuario.update({
         where: {
             id
         },
