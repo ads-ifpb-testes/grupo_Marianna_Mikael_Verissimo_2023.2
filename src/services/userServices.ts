@@ -83,7 +83,6 @@ const findAll = async (): Promise<Usuario[]> => {
             }
         }
     })
-    console.log(users);
     return users;
 }
 
