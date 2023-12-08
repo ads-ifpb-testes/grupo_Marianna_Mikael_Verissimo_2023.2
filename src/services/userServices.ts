@@ -87,12 +87,21 @@ const findAll = async (): Promise<Usuario[]> => {
     return users;
 }
 
-const userDelete = async (id: string): Promise<void> => {
-    const user = await prisma.usuario.delete({
+const userDelete = async (id: string) => {
+    const findUser = await prisma.usuario.findUnique({
+        where:{
+            id,
+        }
+    })
+    if(!findUser){
+        return {message: 'Usuário não existe'}
+    }
+    await prisma.usuario.delete({
         where: {
             id
         }
     })
+    return {message: 'Usuário removido com sucesso'}
 }
 
 const update = async (id: string, nome: string, username: string, senha: string, telefone: string, email: string) => {
@@ -132,6 +141,7 @@ const passwordUpdate = async (id: string, senha: string) => {
             senha: senhaCriptografada
         }
     })
+    return {message: "Senha atualizada com sucesso!"}
 }
 
 const findByUsername = async (username: string) => {

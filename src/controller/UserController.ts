@@ -24,9 +24,9 @@ const listUsers = async (req: Request, res: Response): Promise<Response> => {
 const deleteUser = async (req: Request, res: Response): Promise<Response> => {
     const { id } = req.params;
 
-    await userServices.userDelete(id);
+    const resp = await userServices.userDelete(id);
 
-    return res.status(201).json({ message: "Usuário deletado com sucesso!" });
+    return res.status(201).json(resp);
 }
 
 const update = async (req: Request, res: Response): Promise<Response> => {
@@ -41,8 +41,8 @@ const passwordUpdate = async (req: Request, res: Response): Promise<Response> =>
     const { id } = req.params;
     const { senha } = req.body;
 
-    await userServices.passwordUpdate(id, senha);
-    return res.status(200).json({ message: "Senha atualizada com sucesso!" })
+    const resp = await userServices.passwordUpdate(id, senha);
+    return res.status(200).json(resp)
 }
 
 const findUser = async (req: Request, res: Response) => {
