@@ -143,13 +143,18 @@ export class ImovelHandle {
   }
   static async deleteImage(id_imovel: string, nomeImagem: string) {
     try {
-      const imagens = (await this.getImages(id_imovel)).imagens
-      const imagem = imagens?.find((img) => img.nomeImagem === nomeImagem)
-      if (!imagem) {
+      const img = await prisma.imagem.findFirst({
+        where: {
+          imovelId: id_imovel,
+          nomeImagem: nomeImagem
+        }
+      })
+
+      if (!img) {
         return { message: "imagem não encontrada.", status: 404 }
       }
       await prisma.imagem.delete({
-        where: { id: imagem?.id }
+        where: { id: img.id }
       })
       await deleteFile(`./tmp/imovelImage/${nomeImagem}`)
 
@@ -161,8 +166,8 @@ export class ImovelHandle {
       status: 200,
       message: "imagem deletada"
     }
-
   }
+
   static async getImages(id: string) {
     let imagens
     try {
