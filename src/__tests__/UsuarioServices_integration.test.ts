@@ -44,6 +44,10 @@ describe('Testes de integração para login de usuário', () => {
         const { username } = mockUserData;
         const senha = "senha";
         const result = await userServices.loginUser(username, senha);
-        expect(result).toEqual({ message: "Usuário não existe" });
+        expect(result).toEqual({ 
+            message: "Usuário não existe", 
+            status: 401, 
+            token: null }
+        );
     })
 })
