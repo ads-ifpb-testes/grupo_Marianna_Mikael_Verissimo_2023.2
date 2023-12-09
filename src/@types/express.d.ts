@@ -4,7 +4,7 @@ import { Imagem } from "../model/Imagem"
 
 declare namespace Express {
   export interface Request {
-    user: Usuario;
-    imovel: Imovel
+    user: Usuario,
+    imovel: Imovel,
   }
 }

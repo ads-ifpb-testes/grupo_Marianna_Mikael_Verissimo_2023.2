@@ -1,8 +1,8 @@
-import { ImovelHandle } from '../services/imovelServices';
+import { ImagemHandle } from '../services/imagensServices';
 import { prismaMock } from '../../singleton';
 
 
-describe('ImovelHandle.getImages', () => {
+describe('Testa visualização de imagem de certo imóvel', () => {
     test('returns images when they exist', async () => {
         const mockImage =
         {
@@ -14,7 +14,7 @@ describe('ImovelHandle.getImages', () => {
         }
         prismaMock.imagem.findMany.mockResolvedValue([mockImage]);
 
-        const result = await ImovelHandle.getImages('1');
+        const result = await ImagemHandle.getImages('1');
         expect(result).toEqual({
             status: 200,
             message: "requisição completa com sucesso",
@@ -26,7 +26,8 @@ describe('ImovelHandle.getImages', () => {
         const mockError = new Error('Database error');
         prismaMock.imagem.findMany.mockRejectedValue(mockError);
 
-        const result = await ImovelHandle.getImages('1');
+
+        const result = await ImagemHandle.getImages('1');
         expect(result).toEqual({
             message: "falha ao procurar imagens.",
             error: mockError,
@@ -37,7 +38,7 @@ describe('ImovelHandle.getImages', () => {
     test('returns empty array when no images exist', async () => {
         prismaMock.imagem.findMany.mockResolvedValue([]);
 
-        const result = await ImovelHandle.getImages('1');
+        const result = await ImagemHandle.getImages('1');
         expect(result).toEqual({
             status: 200,
             message: "requisição completa com sucesso",

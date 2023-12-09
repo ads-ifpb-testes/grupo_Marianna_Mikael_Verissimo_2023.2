@@ -3,10 +3,6 @@ import checkEdificeExists from "../middlewares/checkEdificeExists";
 import checkEdificeIdExists from "../middlewares/checkEdificeExistsById";
 import { ImovelController } from "../controller/imovelController";
 import validateImovel from "../middlewares/validateImovel";
-import multer from 'multer';
-import uploadConfig from '../config/upload';
-
-const uploadImage = multer(uploadConfig.upload("./tmp/imovelImage"))
 
 const imovelRouter = Router();
 
@@ -22,11 +18,5 @@ imovelRouter.delete("/imoveis/:id", checkEdificeIdExists, ImovelController.delet
 imovelRouter.patch("/imoveis/:id/nome", checkEdificeIdExists, validateImovel.nome, ImovelController.updateName);
 imovelRouter.patch('/imoveis/:id/local', checkEdificeIdExists, validateImovel.local, ImovelController.updateLocale);
 imovelRouter.patch('/imoveis/:id/disponivel', checkEdificeIdExists, validateImovel.disponivel, ImovelController.updateAvailability);
-
-//rota relativa às imagens
-imovelRouter.post("/imoveis/:id/images", checkEdificeIdExists, uploadImage.array("images"), ImovelController.handleUpload)
-imovelRouter.delete("/imoveis/:id/images", checkEdificeIdExists, ImovelController.removeImage)
-imovelRouter.get("/imoveis/:id/images", checkEdificeIdExists, ImovelController.getImages)
-imovelRouter.patch("/imoveis/:id/images", checkEdificeIdExists, uploadImage.single("imagem") , ImovelController.updateImage )
 
 export default imovelRouter;

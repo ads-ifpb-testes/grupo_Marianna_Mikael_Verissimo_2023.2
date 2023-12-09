@@ -1,4 +1,4 @@
-import { ImovelHandle } from '../services/imovelServices';
+import { ImagemHandle } from '../services/imagensServices';
 import { prismaMock } from '../../singleton';
 import { deleteFile } from '../utils/file';
 
@@ -6,7 +6,7 @@ jest.mock('../utils/file', () => ({
   deleteFile: jest.fn(),
 }));
 
-describe('ImovelHandle.deleteImage', () => {
+describe('Testa remoção de imagem de certo imóvel', () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
@@ -22,7 +22,7 @@ describe('ImovelHandle.deleteImage', () => {
     prismaMock.imagem.findFirst.mockResolvedValue(mockImage);
     prismaMock.imagem.delete.mockResolvedValue(mockImage);
 
-    const result = await ImovelHandle.deleteImage('1', 'image1.jpg');
+    const result = await ImagemHandle.deleteImage('1', 'image1.jpg');
 
     expect(result).toEqual({
       status: 200,
@@ -45,7 +45,7 @@ describe('ImovelHandle.deleteImage', () => {
   test('returns error message when image is not found', async () => {
     prismaMock.imagem.findFirst.mockResolvedValue(null);
 
-    const result = await ImovelHandle.deleteImage('1', 'image1.jpg');
+    const result = await ImagemHandle.deleteImage('1', 'image1.jpg');
 
     expect(result).toEqual({
       message: 'imagem não encontrada.',
@@ -65,7 +65,7 @@ describe('ImovelHandle.deleteImage', () => {
     const mockError = new Error('Database error');
     prismaMock.imagem.findFirst.mockRejectedValue(mockError);
 
-    const result = await ImovelHandle.deleteImage('1', 'image1.jpg');
+    const result = await ImagemHandle.deleteImage('1', 'image1.jpg');
 
     expect(result).toEqual({
       message: 'falha ao deletar imagem.',
