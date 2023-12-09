@@ -167,6 +167,9 @@ const findByUsername = async (username: string) => {
             }
         }
     })
+    if(!user){
+        return {message: "Usuário não encontrado"}
+    }
     return user;
 }
 
