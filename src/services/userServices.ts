@@ -13,20 +13,21 @@ const loginUser = async (username: string, senha: string) => {
         }
     })
     if (!userExist) {
-        return { message: "Usuário não existe" }
+        return { message: "Usuário não existe", status: 401, token: null }
     }
 
     const verifica = await compare(senha, userExist.senha);
 
     if (!verifica) {
-        return { message: "Username ou senha inválidos" }
+        return { message: "Username ou senha inválidos", status: 401, token: null }
     }
-
-    const { nome } = userExist;
-    const token = sign({ nome }, process.env.SECRET as string, {
-        expiresIn: '5h', subject: userExist.id
+    const user = { name: username }
+    // const { nome } = userExist;
+    const token = sign(user, process.env.KEY_SECRET as string, {
+        expiresIn: '5h',
+        subject: userExist.id
     })
-    return (token)
+    return { token: token, status: 200, message: "sucesso" }
 }
 
 
@@ -88,19 +89,19 @@ const findAll = async (): Promise<Usuario[]> => {
 
 const userDelete = async (id: string) => {
     const findUser = await prisma.usuario.findUnique({
-        where:{
+        where: {
             id,
         }
     })
-    if(!findUser){
-        return {message: 'Usuário não existe'}
+    if (!findUser) {
+        return { message: 'Usuário não existe' }
     }
     await prisma.usuario.delete({
         where: {
             id
         }
     })
-    return {message: 'Usuário removido com sucesso'}
+    return { message: 'Usuário removido com sucesso' }
 }
 
 const update = async (id: string, nome: string, username: string, telefone: string, email: string) => {
@@ -138,7 +139,7 @@ const passwordUpdate = async (id: string, senha: string) => {
             senha: senhaCriptografada
         }
     })
-    return {message: "Senha atualizada com sucesso!"}
+    return { message: "Senha atualizada com sucesso!" }
 }
 
 const findByUsername = async (username: string) => {
@@ -167,8 +168,8 @@ const findByUsername = async (username: string) => {
             }
         }
     })
-    if(!user){
-        return {message: "Usuário não encontrado"}
+    if (!user) {
+        return { message: "Usuário não encontrado" }
     }
     return user;
 }

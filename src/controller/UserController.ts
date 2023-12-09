@@ -4,8 +4,9 @@ import { Request, Response } from "express";
 const login = async (req: Request, res: Response): Promise<Response> => {
     const { username, senha } = req.body;
 
-    const token = await userServices.loginUser(username, senha);
-    return res.status(200).json(token);
+    const resp = await userServices.loginUser(username, senha);
+    const { status, message, token } = resp
+    return res.status(status).json({ message, token });
 }
 
 const addUser = async (req: Request, res: Response): Promise<Response> => {
