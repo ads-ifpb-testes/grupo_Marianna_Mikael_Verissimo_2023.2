@@ -7,11 +7,7 @@ interface IPayload {
     name: string;
 }
 
-interface CustomRequest extends Request {
-    idUser?: string;
-  }
-
-export async function verifyAuthorization(req: CustomRequest, resp: Response, next: NextFunction) {
+export async function verifyAuthorization(req: Request, resp: Response, next: NextFunction) {
     const headerAuth = req.headers.authorization;
   
     if (!headerAuth) {
@@ -22,7 +18,7 @@ export async function verifyAuthorization(req: CustomRequest, resp: Response, ne
   
     try {
       const { name, sub } = verify(token, process.env.SECRET as string) as IPayload;
-      req.idUser = sub;
+      req.headers.user_id = sub;
     } catch (err) {
       return resp.status(403).json({ message: 'token invalid' });
     }

@@ -13,9 +13,10 @@ const handleUpload = async (req: Request, res: Response) => {
 }
 
 const remove = async (req: Request, res: Response) => {
-    const { id } = req.params //id do imovel
+    const { id: imovel_id } = req.params //id do imovel
     const { nomeImagem } = req.body //imagem a ser removida do bd e memória
-    const resp = await ImagemHandle.deleteImage(id as string, nomeImagem)
+    
+    const resp = await ImagemHandle.deleteImage(imovel_id as string, nomeImagem)
     const { status, message } = resp;
 
     return res.status(status).send({ message })
