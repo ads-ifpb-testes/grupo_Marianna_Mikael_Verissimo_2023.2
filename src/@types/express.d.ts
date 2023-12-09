@@ -1,10 +1,12 @@
 import { Imovel } from "../model/Imovel";
 import { Usuario } from "../model/Usuario"
 import { Imagem } from "../model/Imagem"
-
-declare namespace Express {
-  export interface Request {
-    user: Usuario,
-    imovel: Imovel,
+import express from "express";
+  
+declare global {
+  namespace Express {
+    export interface Request {
+      user_id?: Usuario.id;
+    }
   }
 }
