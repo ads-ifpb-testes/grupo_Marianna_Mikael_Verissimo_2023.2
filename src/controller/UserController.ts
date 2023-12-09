@@ -5,6 +5,7 @@ const login = async (req: Request, res: Response): Promise<Response> => {
     const { username, senha } = req.body;
 
     const token = await userServices.loginUser(username, senha);
+    
     return res.status(200).json(token);
 }
 

@@ -26,6 +26,9 @@ const loginUser = async (username: string, senha: string) => {
     const token = sign({ nome }, process.env.SECRET as string, {
         expiresIn: '5h', subject: userExist.id
     })
+    const decodedToken = jwt.decode(token);
+    console.log(decodedToken);
+
     return (token)
 }
 
