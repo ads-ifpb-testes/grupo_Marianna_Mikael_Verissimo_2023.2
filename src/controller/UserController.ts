@@ -31,9 +31,9 @@ const deleteUser = async (req: Request, res: Response): Promise<Response> => {
 
 const update = async (req: Request, res: Response): Promise<Response> => {
     const { id } = req.params;
-    const { nome, username, senha, telefone, email } = req.body;
+    const { nome, username, telefone, email } = req.body;
 
-    const usuario = await userServices.update(id, nome, username, senha, telefone, email);
+    const usuario = await userServices.update(id, nome, username, telefone, email);
     return res.status(200).json(usuario);
 }
 
