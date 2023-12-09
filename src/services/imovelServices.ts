@@ -3,8 +3,6 @@ import { v4 as uuid } from "uuid";
 import { Imovel } from "../model/Imovel";
 import { Usuario } from "../model/Usuario";
 import { Coordinates } from "../model/Imovel";
-import { Imagem } from "../model/Imagem";
-import { deleteFile } from "../utils/file";
 
 export class ImovelHandle {
   //C
@@ -122,95 +120,6 @@ export class ImovelHandle {
     return {
       status: 200,
       message: 'Imovel removido com sucesso'
-    }
-  }
-  static async uploadImg(id: string, imagens: Imagem[]) {
-
-    const imovel = await prisma.imovel.update({
-      where: { id },
-      data: {
-        imagens: {
-          create: [...imagens]
-        }
-      }
-    });
-
-    return {
-      status: 200,
-      message: 'Modificado com sucesso!',
-      imovel
-    }
-  }
-  static async deleteImage(id_imovel: string, nomeImagem: string) {
-    try {
-      const img = await prisma.imagem.findFirst({
-        where: {
-          imovelId: id_imovel,
-          nomeImagem: nomeImagem
-        }
-      })
-
-      if (!img) {
-        return { message: "imagem não encontrada.", status: 404 }
-      }
-      await prisma.imagem.delete({
-        where: { id: img.id }
-      })
-      await deleteFile(`./tmp/imovelImage/${nomeImagem}`)
-
-    } catch (error) {
-      return { message: "falha ao deletar imagem.", error, status: 404 }
-    }
-
-    return {
-      status: 200,
-      message: "imagem deletada"
-    }
-  }
-
-  static async getImages(id: string) {
-    let imagens
-    try {
-      imagens = await prisma.imagem.findMany({
-        where: { imovelId: id }
-      })
-    } catch (error) {
-      return { message: "falha ao procurar imagens.", error, status: 404 }
-    }
-    return {
-      status: 200,
-      message: "requisição completa com sucesso",
-      imagens
-    }
-  }
-  static async updateImage(id: string, oldImgFilename: string, newImgFilename: string) {
-    const exists = await prisma.imagem.findFirst({
-      where: {
-        imovelId: id,
-        nomeImagem: oldImgFilename
-      }
-    });
-    if (!exists) {
-      await deleteFile(`./tmp/imovelImage/${newImgFilename}`)
-      return {
-        status: 404,
-        message: "imagem a ser atualizada não existe"
-      };
-    }
-    await deleteFile(`./tmp/imovelImage/${oldImgFilename}`)
-
-    await prisma.imagem.update({
-      where: {
-        id: exists.id
-      },
-      data: {
-        nomeImagem: newImgFilename
-      }
-    })
-
-    return {
-      status: 200,
-      message: 'Modificado com sucesso!',
     }
   }
 }
