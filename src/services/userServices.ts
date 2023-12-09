@@ -144,12 +144,24 @@ const passwordUpdate = async (id: string, senha: string) => {
     return {message: "Senha atualizada com sucesso!"}
 }
 
+const findId = async (username:string) =>{
+    const user = await prisma.usuario.findUnique({
+        where:{
+            username
+        }
+    })
+    if(!user){
+        return { message: "Usuário não encontrado"};
+    }
+    return user.id;
+}
+
 const findByUsername = async (username: string) => {
     const user = await prisma.usuario.findUnique({
         where: {
             username
         },
-        include: {
+        include: {   
             imoveis: {
                 select: {
                     id: true,
@@ -179,6 +191,7 @@ const findByUsername = async (username: string) => {
 
 export const userServices = {
     loginUser,
+    findId,
     create,
     findAll,
     userDelete,

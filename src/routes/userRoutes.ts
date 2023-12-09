@@ -32,6 +32,9 @@ routesUsers.patch('/users/:id/password',verifyAuthorization, validateUsuario.pas
 //busca usuario por username
 routesUsers.get('/users/:username', verifyAuthorization, UserController.findUser);
 
+//retorna id do usuário que possui o username enviado
+routesUsers.get('users/:username', verifyAuthorization, UserController.findId);
+
 
 
 
