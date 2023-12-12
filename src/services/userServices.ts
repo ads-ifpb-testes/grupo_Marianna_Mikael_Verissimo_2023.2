@@ -1,7 +1,6 @@
 import { v4 as uuid } from "uuid";
 import { prisma } from "../database/prisma.client";
 import { Usuario } from "../model/Usuario";
-const jwt = require('jsonwebtoken');
 require('dotenv').config();
 import { compare, hash } from "bcrypt";
 import { sign } from "jsonwebtoken";

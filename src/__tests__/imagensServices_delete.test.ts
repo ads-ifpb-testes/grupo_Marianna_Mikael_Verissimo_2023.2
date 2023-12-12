@@ -11,7 +11,7 @@ describe('Testa remoção de imagem de certo imóvel', () => {
     jest.clearAllMocks();
   });
 
-  test('deletes image when it exists', async () => {
+  test('deleta imagem caso exista', async () => {
     const mockImage = {
       id: '1123',
       nomeImagem: 'image1.jpg',
@@ -42,7 +42,7 @@ describe('Testa remoção de imagem de certo imóvel', () => {
     expect(deleteFile).toHaveBeenCalledWith('./tmp/imovelImage/image1.jpg');
   });
 
-  test('returns error message when image is not found', async () => {
+  test('retorna erro quando não há imagem para ser deletada', async () => {
     prismaMock.imagem.findFirst.mockResolvedValue(null);
 
     const result = await ImagemHandle.deleteImage('1', 'image1.jpg');
@@ -61,7 +61,7 @@ describe('Testa remoção de imagem de certo imóvel', () => {
     expect(deleteFile).not.toHaveBeenCalled();
   });
 
-  test('returns error message when database query fails', async () => {
+  test('retorna erro caso a query falhe no banco de dados', async () => {
     const mockError = new Error('Database error');
     prismaMock.imagem.findFirst.mockRejectedValue(mockError);
 

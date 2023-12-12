@@ -3,7 +3,7 @@ import { prismaMock } from '../../singleton';
 
 
 describe('Testa visualização de imagem de certo imóvel', () => {
-    test('returns images when they exist', async () => {
+    test('retorna imagens quando existem', async () => {
         const mockImage =
         {
             id: '1123',
@@ -22,7 +22,7 @@ describe('Testa visualização de imagem de certo imóvel', () => {
         });
     });
 
-    test('returns error message when database query fails', async () => {
+    test('retorna erro caso a query falhe no banco de dados', async () => {
         const mockError = new Error('Database error');
         prismaMock.imagem.findMany.mockRejectedValue(mockError);
 
@@ -35,7 +35,7 @@ describe('Testa visualização de imagem de certo imóvel', () => {
         });
     });
 
-    test('returns empty array when no images exist', async () => {
+    test('retorna array vazia quando não há imagens', async () => {
         prismaMock.imagem.findMany.mockResolvedValue([]);
 
         const result = await ImagemHandle.getImages('1');
