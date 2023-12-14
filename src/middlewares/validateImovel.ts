@@ -10,7 +10,7 @@ export default {
         const data = <ImovelBody>req.body
         try {
             await schema.validate(data, { abortEarly: false, })
-            next()
+            return next()
         } catch (error) {
             if (error instanceof ValidationError) {
                 return res.status(400).json({ error })
