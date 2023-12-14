@@ -68,8 +68,48 @@ describe("Testes de integração para login de usuário", () => {
                     return done()
                 })
         })
+        it("resposta rejeitada para token inválido", async () => {
+            const { body } = await request(app)
+                .get("/users")
+                .auth("tokeninvalido", { type: "bearer" })
+                .set("Accept", "application/json")
+                .expect("Content-Type", /json/)
+                .expect(403)
+            expect(body.message).toBe("token invalid")
+        })
     })
     describe("POST /users", () => {
-        it("",)
+        it("deve responder com status code 200 para requisição com dados válidos", async () => {
+            const { status, body } = await request(app)
+                .post("/users")
+                .set("Accept", "application/json")
+                .send({
+                    nome: "fulano",
+                    username: "testusername",
+                    senha: "testpassword",
+                    telefone: "12345678910",
+                    email: "a@b.com",
+                })
+            expect(status).toBe(201)
+            expect(body.message).toBe("Usuário cadastrado com sucesso!")
+            const usuario = await prisma.usuario.findFirst({
+                where: { username: "testusername" },
+            })
+            expect(usuario).not.toBeNull()
+        })
+        it("deve responder com status code 200 para requisição com dados válidos", async () => {
+            const { status, body } = await request(app)
+                .post("/users")
+                .set("Accept", "application/json")
+                .send({
+                    nome: "fulano",
+                    username: "testusername",
+                    senha: "aaa", //senha deve ter 8 caracteres ao menos
+                    telefone: "12345678910",
+                    email: "a@b.com",
+                })
+            expect(status).toBe(400)
+            expect(body.error).not.toBeNull()
+        })
     })
 })
